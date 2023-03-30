@@ -1,3 +1,5 @@
+#Part1: Get immutable ID from local AD
+
 Import-Module ActiveDirectory
 
 #local Users on AD
@@ -12,19 +14,18 @@ $AD = DC-SRV
 $data = @()
 
 Foreach($User in $List){
-$data += Invoke-Command -ComputerName $AD -ScriptBlock{
-    $Info = Get-ADUser -Identity $using:User
-    #$Info.SamAccountName
-    $Info.ObjectGUID.ToString()
+    $data += Invoke-Command -ComputerName $AD -ScriptBlock{
+        $Info = Get-ADUser -Identity $using:User
+        $Info.ObjectGUID.ToString()
+    }
 }
-}
+
+#Part2: Set immutable ID for Cloud AD
 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 Install-Module Microsoft.Graph
 
 Connect-Graph -scopes "User.ReadWrite.All"
-
-$ListAzure = "Chantal@estatelawboutique.com" , "jessica@estatelawboutique.com" , "kelsea@personalawgroup.com" , "Natalie@estatelawboutique.com" , "zoe@estatelawboutique.com" 
 
 $Step = 0
 
