@@ -24,6 +24,8 @@ Foreach($User in $List){
 
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 Install-Module Microsoft.Graph
+Install-Module Microsoft.Graph.Users
+
 
 Connect-Graph -scopes "User.ReadWrite.All"
 
